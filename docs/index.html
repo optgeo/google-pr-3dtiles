@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<title>opgeo::google-pr-3dtiles</title>
+<script src="https://ajax.googleapis.com/ajax/libs/cesiumjs/1.105/Build/Cesium/Cesium.js"></script>
+<link href="https://ajax.googleapis.com/ajax/libs/cesiumjs/1.105/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+    Cesium.RequestScheduler.requestsByServer["tile.googleapis.com:443"] = 18;
+    const viewer = new Cesium.Viewer('cesiumContainer', {
+      imageryProvider: false,
+      baseLayerPicker: false,
+      geocoder: false,
+      globe: false,
+      requestRenderMode: true,
+    });
+
+    const tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
+      url: "https://tile.googleapis.com/v1/3dtiles/root.json?key=AIzaSyAXs2tQXV_K1BEwRpXMvdYw07n40yfoEUE",
+      showCreditsOnScreen: true,
+    }));
+  </script>
+</body>
