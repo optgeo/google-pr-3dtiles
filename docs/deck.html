@@ -18,28 +18,21 @@ body { margin: 0; padding: 0; }
 <div id="map"></div>
 <div id="credits"></div>
 <script>
-const GOOGLE_API_KEY = 'AIzaSyAXs2tQXV_K1BEwRpXMvdYw07n40yfoEUE'
-const TILESET_URL = `https://tile.googleapis.com/v1/3dtiles/root.json`;
 const creditsElement = document.getElementById('credits');
 const deckgl = new deck.DeckGL({
   container: 'map',
   initialViewState: {
-    latitude: 40.749771,
-    longitude: -73.963507,
-    zoom: 15,
-    pitch: 60,
-    height: 200
+    latitude: 40.749771, longitude: -73.963507,
+    zoom: 15, pitch: 60, height: 200
   },
   controller: true,
   layers: [
     new deck.Tile3DLayer({
       id: 'google-3d-tiles',
-      data: TILESET_URL,
+      data: `https://tile.googleapis.com/v1/3dtiles/root.json`,
       loadOptions: {
         fetch: {
-          headers: {
-            'X-GOOG-API-KEY': GOOGLE_API_KEY
-          }
+          headers: { 'X-GOOG-API-KEY': 'AIzaSyAXs2tQXV_K1BEwRpXMvdYw07n40yfoEUE' }
         }
       },
       onTilesetLoad: tileset3d => {
@@ -56,7 +49,7 @@ const deckgl = new deck.DeckGL({
       operation: 'terrain+draw'
     })
   ]
-});
+})
 </script>
 </body>
 </html>
