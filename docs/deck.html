@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>deck.gl example</title>
+<script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<meta property="og:image"
+  content="https://repository-images.githubusercontent.com/603445772/55a074cf-78ee-4d84-b963-470fff698228"/>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+#credits { position: absolute; bottom: 0; right: 0;
+  padding: 2px; font-size: 15px; color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="credits"></div>
+<script>
+const GOOGLE_API_KEY = 'AIzaSyAXs2tQXV_K1BEwRpXMvdYw07n40yfoEUE'
+const TILESET_URL = `https://tile.googleapis.com/v1/3dtiles/root.json`;
+const creditsElement = document.getElementById('credits');
+const deckgl = new deck.DeckGL({
+  container: 'map',
+  initialViewState: {
+    latitude: 40.749771,
+    longitude: -73.963507,
+    zoom: 15,
+    pitch: 60,
+    height: 200
+  },
+  controller: true,
+  layers: [
+    new deck.Tile3DLayer({
+      id: 'google-3d-tiles',
+      data: TILESET_URL,
+      loadOptions: {
+        fetch: {
+          headers: {
+            'X-GOOG-API-KEY': GOOGLE_API_KEY
+          }
+        }
+      },
+      onTilesetLoad: tileset3d => {
+        tileset3d.options.onTraversalComplete = selectedTiles => {
+          const credits = new Set()
+          selectedTiles.forEach(tile => {
+            const { copyright } = tile.content.gltf.asset
+            copyright.split(';').forEach(credits.add, credits)
+            creditsElement.innerHTML = [...credits].join('; ')
+          })
+          return selectedTiles;
+        }
+      },
+      operation: 'terrain+draw'
+    })
+  ]
+});
+</script>
+</body>
+</html>
